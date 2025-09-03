@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Interativa - HTML, CSS e JavaScript</title>
+    <style>
+        /* CSS será inserido aqui */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Interativa</h1>
+            <p>HTML, CSS e JavaScript</p>
+        </header>
+<section class="interactive-section">
+ <h2>Alterador de Cores</h2>
+<p>Clique nos botões para alterar a cor de fundo desta seção</p> <div class="color-buttons">
+<button class="btn" id="redBtn">Vermelho</button>
+                <button class="btn" id="greenBtn">Verde</button>
+                <button class="btn" id="blueBtn">Azul</button>
+                <button class="btn" id="resetColorBtn">Resetar</button>
+            </div>
+        </section>
+        
+        <section class="interactive-section">
+            <h2>Contador Interativo</h2>
+            <p>Use os botões para aumentar, diminuir ou resetar o contador</p>
+            <div class="counter-display">
+                <span id="counterValue">0</span>
+            </div>
+            <div class="counter-buttons">
+                <button class="btn" id="decrementBtn">-</button>
+                <button class="btn" id="resetBtn">Resetar</button>
+                <button class="btn" id="incrementBtn">+</button>
+            </div>
+        </section>
+        
+        <section class="interactive-section">
+            <h2>Gerador de Mensagens</h2>
+            <p>Digite seu nome e clique no botão para gerar uma mensagem personalizada</p>
+            <input type="text" id="nameInput" placeholder="Digite seu nome">
+            <button class="btn" id="generateMsgBtn">Gerar Mensagem</button>
+            <div class="message-display" id="messageDisplay">
+Sua mensagem aparecerá aqui...
+ </div>
+ </section>
+    
+<section class="interactive-section">
+<h2>Mostrar/Ocultar de Conteúdo</h2>
+ <p>Clique no botão para mostrar ou ocultar o texto abaixo</p>
+<button class="btn" id="toggleContentBtn">Ocultar Conteúdo</button>
+<div class="toggle-content" id="toggleContent">
+<p>Este é um conteúdo que pode ser mostrado ou ocultado através do botão.</p>
+<p>Observe como o texto aparece e desaparece.</p>
+</div>
+</section>
+        
+<section class="interactive-section">
+ <h2>Relatório de Interações</h2>
+<p>Esta seção registra todas as interações realizadas na página</p>
+<div class="log-display" id="interactionLog">
+<p>Nenhuma interação registrada ainda...</p>
+</div>
+<button class="btn" id="clearLogBtn">Limpar Registros</button> </section>
+</div>
+
+<script>
+// JavaScript será inserido aqui
+// Variáveis globais
+let counterValue = 0;
+let interactionCount = 0;
+
+// Elementos DOM
+const counterElement = document.getElementById('counterValue');
+const messageDisplay = document.getElementById('messageDisplay');
+const toggleContent = document.getElementById('toggleContent');
+const toggleButton = document.getElementById('toggleContentBtn');
+const interactionLog = document.getElementById('interactionLog');
+const nameInput = document.getElementById('nameInput');
+
+// Função para registrar interações
+function logInteraction(action) {
+    interactionCount++;
+    const timestamp = new Date().toLocaleTimeString();
+    const logEntry = document.createElement('p');
+    logEntry.textContent = `${interactionCount}. [${timestamp}] ${action}`;
+    
+    // Remove a mensagem inicial se existir
+    if (interactionLog.querySelector('p:first-child').textContent === 'Nenhuma interação registrada ainda...') {
+        interactionLog.innerHTML = '';
+    }
+    
+    interactionLog.prepend(logEntry);
+}
+
+// Alterador de Cores
+document.getElementById('redBtn').addEventListener('click', function() {
+    document.querySelector('.interactive-section:nth-child(2)').style.backgroundColor = '#ffcccc';
+    logInteraction('Cor alterada para Vermelho');
+});
+
+document.getElementById('greenBtn').addEventListener('click', function() {
+    document.querySelector('.interactive-section:nth-child(2)').style.backgroundColor = '#ccffcc';
+    logInteraction('Cor alterada para Verde');
+});
+
+document.getElementById('blueBtn').addEventListener('click', function() {
+    document.querySelector('.interactive-section:nth-child(2)').style.backgroundColor = '#cce5ff';
+    logInteraction('Cor alterada para Azul');
+});
+
+document.getElementById('resetColorBtn').addEventListener('click', function() {
+    document.querySelector('.interactive-section:nth-child(2)').style.backgroundColor = '#f8f9fa';
+    logInteraction('Cor resetada para o padrão');
+});
+
+// Contador Interativo
+document.getElementById('incrementBtn').addEventListener('click', function() {
+    counterValue++;
+    counterElement.textContent = counterValue;
+    counterElement.style.color = '#27ae60';
+    setTimeout(() => { counterElement.style.color = '#2575fc'; }, 300);
+    logInteraction('Contador incrementado para: ' + counterValue);
+});
+
+document.getElementById('decrementBtn').addEventListener('click', function() {
+    counterValue--;
+    counterElement.textContent = counterValue;
+    counterElement.style.color = '#e74c3c';
+    setTimeout(() => { counterElement.style.color = '#2575fc'; }, 300);
+    logInteraction('Contador decrementado para: ' + counterValue);
+});
+
+document.getElementById('resetBtn').addEventListener('click', function() {
+    counterValue = 0;
+    counterElement.textContent = counterValue;
+    counterElement.style.color = '#2575fc';
+    logInteraction('Contador resetado para 0');
+});
+
+// Gerador de Mensagens
+document.getElementById('generateMsgBtn').addEventListener('click', function() {
+    const name = nameInput.value.trim();
+    const messages = [
+        `Olá, ${name || 'visitante'}! Seja bem-vindo à nossa página interativa.`,
+        `Que bom te ver por aqui, ${name || 'amigo'}! Esperamos que esteja gostando das interações.`,
+        `${name || 'Usuário'}, você é nossa visita de número ${Math.floor(Math.random() * 1000) + 1} hoje!`,
+        `Olá, ${name || 'ser incrível'}! Obrigado por testar nossa página dinâmica.`
+    ];
+    
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    messageDisplay.textContent = randomMessage;
+    
+    logInteraction(`Mensagem gerada: "${randomMessage}"`);
+});
+
+// Mostrador/Ocultador de Conteúdo
+toggleButton.addEventListener('click', function() {
+    toggleContent.classList.toggle('hidden');
+    
+    if (toggleContent.classList.contains('hidden')) {
+        toggleButton.textContent = 'Mostrar Conteúdo';
+        logInteraction('Conteúdo ocultado');
+    } else {
+        toggleButton.textContent = 'Ocultar Conteúdo';
+        logInteraction('Conteúdo exibido');
+    }
+});
+
+// Limpar Registros
+document.getElementById('clearLogBtn').addEventListener('click', function() {
+    interactionLog.innerHTML = '<p>Nenhuma interação registrada ainda...</p>';
+    interactionCount = 0;
+    logInteraction('Registros de interação limpos');
+});
+
+// Efeitos de hover nas seções
+const sections = document.querySelectorAll('.interactive-section');
+sections.forEach(section => {
+    section.addEventListener('mouseenter', () => {
+        section.style.transform = 'translateY(-5px)';
+        section.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.2)';
+    });
+    
+    section.addEventListener('mouseleave', () => {
+        section.style.transform = 'translateY(0)';
+        section.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+    });
+});
+
+// Inicialização
+document.addEventListener('DOMContentLoaded', function() {
+    logInteraction('Página carregada');
+});
+ </script>
+</body>
+</html>
